@@ -1,0 +1,84 @@
+--- 
++++ 
+@@ -3,12 +3,21 @@
+ Modules to compute the matching cost and solve the corresponding LSAP.
+ """
+ import torch
+-from scipy.optimize import linear_sum_assignment
++from .lsa import linear_sum_assignment
+ from torch import nn
++from torch.nn import functional as F
+ 
+ from util.box_ops import box_cxcywh_to_xyxy, generalized_box_iou
+ 
+ 
++def cdist(out_bbox, tgt_bbox):
++    out_bbox_unsqz = torch.unsqueeze(out_bbox, 1)
++    tgt_bbox_unsqz = torch.unsqueeze(tgt_bbox, 0)
++    L1_norm = torch.abs(torch.sub(out_bbox_unsqz, tgt_bbox_unsqz))
++    L1_norm_reduced = torch.sum(L1_norm, -1)
++    return L1_norm_reduced
++
++
+ class HungarianMatcher(nn.Module):
+     """This class computes an assignment between the targets and the predictions of the network
+ 
+@@ -17,7 +26,7 @@ class HungarianMatcher(nn.Module):
+     while the others are un-matched (and thus treated as non-objects).
+     """
+ 
+-    def __init__(self, cost_class: float = 1, cost_bbox: float = 1, cost_giou: float = 1):
++    def __init__(self, max_num_segms: int, cost_class: float = 1, cost_bbox: float = 1, cost_giou: float = 1):
+         """Creates the matcher
+ 
+         Params:
+@@ -26,13 +35,14 @@ class HungarianMatcher(nn.Module):
+             cost_giou: This is the relative weight of the giou loss of the bounding box in the matching cost
+         """
+         super().__init__()
++        self.max_num_segms = max_num_segms
+         self.cost_class = cost_class
+         self.cost_bbox = cost_bbox
+         self.cost_giou = cost_giou
+         assert cost_class != 0 or cost_bbox != 0 or cost_giou != 0, "all costs cant be 0"
+ 
+     @torch.no_grad()
+-    def forward(self, outputs, targets):
++    def forward(self, outputs, targets, num_segms):
+         """ Performs the matching
+ 
+         Params:
+@@ -68,19 +78,27 @@ class HungarianMatcher(nn.Module):
+         cost_class = -out_prob[:, tgt_ids]
+ 
+         # Compute the L1 cost between boxes
+-        cost_bbox = torch.cdist(out_bbox, tgt_bbox, p=1)
++        cost_bbox = cdist(out_bbox, tgt_bbox)
+ 
+         # Compute the giou cost betwen boxes
+         cost_giou = -generalized_box_iou(box_cxcywh_to_xyxy(out_bbox), box_cxcywh_to_xyxy(tgt_bbox))
+ 
+         # Final cost matrix
+         C = self.cost_bbox * cost_bbox + self.cost_class * cost_class + self.cost_giou * cost_giou
+-        C = C.view(bs, num_queries, -1).cpu()
++        C = C.view(bs, num_queries, -1)
+ 
+-        sizes = [len(v["boxes"]) for v in targets]
+-        indices = [linear_sum_assignment(c[i]) for i, c in enumerate(C.split(sizes, -1))]
+-        return [(torch.as_tensor(i, dtype=torch.int64), torch.as_tensor(j, dtype=torch.int64)) for i, j in indices]
++        offsets = torch.cat((torch.tensor([0]), torch.cumsum(num_segms, 0)))
++        indices = []
++        C_indices = torch.arange(C.shape[-1])
++        for i in range(len(offsets) - 1):
++            C_i = C[..., (offsets[i] <= C_indices) & (C_indices < offsets[i + 1])][i]
++            padding_i = torch.full((self.max_num_segms - num_segms[i], ), torch.finfo(torch.float32).max).repeat(num_queries, 1)
++            C_i_padded = torch.cat((C_i, padding_i), dim=1)
++            row_ind, col_ind = linear_sum_assignment(C_i_padded, num_queries, self.max_num_segms)
++            is_valid_assignment = col_ind < num_segms[i]
++            indices.append((row_ind[is_valid_assignment], col_ind[is_valid_assignment]))
++        return indices
+ 
+ 
+ def build_matcher(args):
+-    return HungarianMatcher(cost_class=args.set_cost_class, cost_bbox=args.set_cost_bbox, cost_giou=args.set_cost_giou)
++    return HungarianMatcher(max_num_segms=args.max_num_segms, cost_class=args.set_cost_class, cost_bbox=args.set_cost_bbox, cost_giou=args.set_cost_giou)

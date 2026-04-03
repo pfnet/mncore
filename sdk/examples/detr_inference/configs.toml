@@ -1,0 +1,55 @@
+title = "detr_inference"
+
+[model.backbone]
+backbone = "resnet50"
+dilation = false
+
+[model.transformer]
+enc_layers      = 6
+dec_layers      = 6
+dim_feedforward = 2048
+hidden_dim      = 256
+dropout         = 0.1
+nheads          = 8
+num_queries     = 100
+pre_norm        = false
+
+[model.loss.matcher]
+set_cost_class = 1
+set_cost_bbox  = 5
+set_cost_giou  = 2
+
+[model.loss.loss_coefficients]
+eos_coef       = 0.1
+mask_loss_coef = 1
+dice_loss_coef = 1
+bbox_loss_coef = 5
+giou_loss_coef = 2
+
+
+[data]
+max_num_segms      = 90                # max num of segments in the ground truth labels
+num_workers        = 2
+
+
+[training]
+lr             = 1e-4
+lr_backbone    = 1e-5
+weight_decay   = 1e-4
+epochs         = 300
+lr_drop        = 200   # epoch at which lr drops
+clip_max_norm  = 0.1   # gradient clipping max norm
+frozen_weights = ""    # path to the pretrained model. if set, only the mask head will be trained
+resume         = ""    # checkpoint to resume from
+masks          = true  # create DETRSegm obj
+aux_loss       = false
+
+
+[evaluation]
+num_split          = 100
+position_embedding = "sine"
+dataset_file       = "coco_panoptic"
+
+
+[misc]
+batch_size = 1
