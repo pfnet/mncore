@@ -13,11 +13,11 @@ Programs developed with the MN-Core SDK are portable. They can be executed on MN
 
 We recommend installing the MN-Core SDK environment using Docker for consistent setup. Please refer to the following documentation for detailed installation instructions:
 
-* [`sdk/0.4/README.md`](sdk/0.4/README.md)
+* [`sdk/0.5/README.md`](sdk/0.5/README.md)
 
 When using MLSDK, the following documentation will be helpful:
 
-* [MLSDK Documentation](https://dev.mn-core.com/sdk/0.4/MLSDK/docs/en/)
+* [MLSDK Documentation](https://dev.mn-core.com/sdk/0.5/MLSDK/docs/en/)
 * [MLSDK Examples](sdk/examples/README.md)
 
 When testing HPCSDK, please refer to the header files included with the SDK. Note that HPCSDK is currently in alpha stage.
@@ -29,14 +29,14 @@ There are two primary methods for running programs on actual MN-Core hardware:
 ### Run on the cloud (Preferred Computing Platform; PFCP)
 
 The Preferred Computing Platform (PFCP) provides environments equipped with MN-Core processors.
-You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.4/README.md`](sdk/0.4/README.md).
+You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.5/README.md`](sdk/0.5/README.md).
 These pre-built images available on PFCP allow you to seamlessly deploy programs developed and verified in your local environment directly onto MN-Core hardware.
 For instructions on utilizing MN-Core on PFCP, please refer to the [PFCP documentation](https://docs.pfcomputing.com/).
 
 ### Run on bare metal (MN-Core 2 Devkit / MN-Server 2)
 
 MN-Core is also available on bare-metal machine products.
-These machines allow you to execute programs on actual MN-Core hardware within a Docker container built according to [`sdk/0.4/README.md`](sdk/0.4/README.md).
+These machines allow you to execute programs on actual MN-Core hardware within a Docker container built according to [`sdk/0.5/README.md`](sdk/0.5/README.md).
 
 ## Repository Contents
 
@@ -47,4 +47,8 @@ These machines allow you to execute programs on actual MN-Core hardware within a
     * `mncore-sdk-minimal.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.4 minimal Docker image with dependencies
     * `mncore-sdk-full.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.4 "full" Docker image with extra packages
     * `create_dev_ctr.sh`  -- Script to start an MN-Core SDK 0.4 development container
+  * `0.5/`  -- MN-Core SDK 0.5
+    * `mncore-sdk-minimal.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.5 minimal Docker image with dependencies
+    * `mncore-sdk-full.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.5 "full" Docker image with extra packages
+    * `create_dev_ctr.sh`  -- Script to start an MN-Core SDK 0.5 development container
   * `examples/`  -- Examples for the latest MLSDK
