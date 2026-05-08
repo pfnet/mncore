@@ -1,17 +1,21 @@
 # MN-Core Software Samples & Build Resources
 
-This repository provides resources for working with MN-Core.
+This repository provides the following resources for working with MN-Core:
+
+* Examples for the MN-Core SDK
+* Resources for setting up the MN-Core SDK environment
+* Resources for managing bare-metal machines equipped with MN-Core
 
 ## Try the MN-Core SDK
 
 The MN-Core SDK enables developers to build and optimize programs for the MN-Core architecture. The SDK consists of two primary components:
 
 * MLSDK: Provides PyTorch-compatible interface for developing machine learning models.
-* HPCSDK: Provides OpenCL-compatible environment for developing C++ applications.
+* HPCSDK: Provides a general-purpose programming environment in C/C++ with OpenCL-compatible and directive-based programming models. Currently, only MNCL, an OpenCL-compatible environment, is provided.
 
-Programs developed with the MN-Core SDK are portable. They can be executed on MN-Core emulators and GPUs in addition to MN-Core hardware. This flexibility allows you to verify the compatibility of your programs quickly even without direct access to MN-Core hardware.
+Programs developed with the MN-Core SDK are portable. They can run on MN-Core hardware and emulators, and MLSDK programs can also run on GPUs. This flexibility allows you to verify the compatibility of your programs quickly even without direct access to MN-Core hardware.
 
-We recommend installing the MN-Core SDK environment using Docker for consistent setup. Please refer to the following documentation for detailed installation instructions:
+We recommend installing the MN-Core SDK environment using Docker for a consistent setup. Please refer to the following documentation for detailed installation instructions:
 
 * [`sdk/0.5/README.md`](sdk/0.5/README.md)
 
@@ -20,23 +24,28 @@ When using MLSDK, the following documentation will be helpful:
 * [MLSDK Documentation](https://dev.mn-core.com/sdk/0.5/MLSDK/docs/en/)
 * [MLSDK Examples](sdk/examples/README.md)
 
-When testing HPCSDK, please refer to the header files included with the SDK. Note that HPCSDK is currently in alpha stage.
+When testing HPCSDK, please refer to the header files included with the SDK. Note that HPCSDK is currently in an alpha stage.
 
-## Run Programs on MN-Core
+## Run Programs with MN-Core
 
-There are two primary methods for running programs on actual MN-Core hardware:
+Programs developed with the MN-Core SDK can run in the following three environments:
 
-### Run on the cloud (Preferred Computing Platform; PFCP)
+### Run on the emulator
 
-The Preferred Computing Platform (PFCP) provides environments equipped with MN-Core processors.
-You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.5/README.md`](sdk/0.5/README.md).
-These pre-built images available on PFCP allow you to seamlessly deploy programs developed and verified in your local environment directly onto MN-Core hardware.
-For instructions on utilizing MN-Core on PFCP, please refer to the [PFCP documentation](https://docs.pfcomputing.com/).
+The MN-Core SDK includes an MN-Core emulator that runs programs without access to actual hardware. This allows you to easily evaluate portability to MN-Core and estimate expected performance.
+
+The usage of the emulator differs between MLSDK and HPCSDK. Please refer to their respective documentation for details.
 
 ### Run on bare metal (MN-Core 2 Devkit / MN-Server 2)
 
-MN-Core is also available on bare-metal machine products.
-These machines allow you to execute programs on actual MN-Core hardware within a Docker container built according to [`sdk/0.5/README.md`](sdk/0.5/README.md).
+If you have access to an MN-Core 2 Devkit or MN-Server 2, you can run programs on actual MN-Core hardware instead of the emulator. These systems allow you to execute programs within a Docker container built using the instructions in [`sdk/0.5/README.md`](sdk/0.5/README.md).
+
+### Run on the cloud (Preferred Computing Platform; PFCP)
+
+The Preferred Computing Platform (PFCP) also provides environments equipped with MN-Core processors.
+You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.5/README.md`](sdk/0.5/README.md).
+This makes it straightforward to deploy MN-Core applications on PFCP after verifying them locally with the emulator or on bare-metal systems.
+For instructions on using MN-Core on PFCP, please refer to the [PFCP documentation](https://docs.pfcomputing.com/).
 
 ## Repository Contents
 
