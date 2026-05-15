@@ -58,7 +58,5 @@ for filename in "${EXAMPLE_FILES[@]}"; do
     ./exec_with_env.sh python3 "${filename}" --device "${DEVICE}"
 done
 
-exit 0
-
 ./run_timm.sh --model_name resnet50.a1h_in1k --batch_size 16 --device "${DEVICE}"
 

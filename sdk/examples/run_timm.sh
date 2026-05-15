@@ -1,10 +1,7 @@
 #! /bin/bash
-
 set -eux -o pipefail
 
-EXAMPLE_NAME=run_timm
-VENVDIR=/tmp/${EXAMPLE_NAME}_venv
-
+VENVDIR=/tmp/run_timm_venv
 CURRENT_DIR=$(realpath $(dirname $0))
 CODEGEN_DIR=$(realpath ${CURRENT_DIR}/../../)
 BUILD_DIR=${BUILD_DIR:-${CODEGEN_DIR}/build}
@@ -19,4 +16,6 @@ fi
 
 source "${BUILD_DIR}/codegen_pythonpath.sh"
 
-exec python3 ${CURRENT_DIR}/${EXAMPLE_NAME}.py "$@"
+# Set Hugging Face cache directory to avoid filling up the home directory
+HF_HOME=${HF_HOME:-"/tmp/huggingface"} \
+    exec python3 ${CURRENT_DIR}/run_timm.py "$@"

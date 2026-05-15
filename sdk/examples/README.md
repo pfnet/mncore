@@ -19,8 +19,8 @@ Refer to [MN-Core Developer Central](https://dev.mn-core.com/) to set up an envi
 
 For detailed information on each example, please refer to the following:
 
-* [docs/en](https://dev.mn-core.com/sdk/0.4/MLSDK/docs/en/)
-* [docs/ja](https://dev.mn-core.com/sdk/0.4/MLSDK/docs/ja/)
+* [docs/en](https://dev.mn-core.com/sdk/latest/MLSDK/docs/en/)
+* [docs/ja](https://dev.mn-core.com/sdk/latest/MLSDK/docs/ja/)
 
 ### 3. Running Examples
 

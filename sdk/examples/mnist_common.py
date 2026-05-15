@@ -16,6 +16,9 @@ def mnist_loaders(batch_size, eval_batch_size):
             transforms.Normalize((0.1307,), (0.3081,)),
         ]
     )
+    # Hack to avoid downloading a broken data from the first mirror.
+    # TODO(hamaji): Remove this hack after updating torchvision.
+    datasets.MNIST.mirrors = ["https://ossci-datasets.s3.amazonaws.com/mnist/"]
     train_dataset = datasets.MNIST(
         "/tmp", train=True, transform=transform, download=True
     )

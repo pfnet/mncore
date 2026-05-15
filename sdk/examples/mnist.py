@@ -35,6 +35,8 @@ def main(outdir: str, option_json_path: Optional[Path], device_str: str) -> None
     set_tensor_name_in_module(model_with_loss_fn, "model_with_loss_fn")
     for p in model_with_loss_fn.parameters():
         context.register_param(p)
+    for b in model_with_loss_fn.buffers():
+        context.register_buffer(b)
 
     optimizer = MNCoreSGD(model_with_loss_fn.parameters(), 0.1, 0.9, 0.0)
     set_buffer_name_in_optimizer(optimizer, "optimizer")
@@ -113,8 +115,23 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="A standalone MNIST training and inference script."
     )
-    parser.add_argument("--outdir", type=str, default="/tmp/mlsdk_mnist")
-    parser.add_argument("--option_json", type=Path, default=None)
-    parser.add_argument("--device", type=str, default="mncore2:auto")
+    parser.add_argument(
+        "--outdir",
+        type=str,
+        default="/tmp/mlsdk_mnist",
+        help="Path to store compiled and trained results",
+    )
+    parser.add_argument(
+        "--option_json",
+        type=Path,
+        default=None,
+        help="""
+        Path to a JSON file specifying compilation configs,
+        e.g. /opt/pfn/pfcomp/codegen/preset_options/O1.json
+        """,
+    )
+    parser.add_argument(
+        "--device", type=str, default="mncore2:auto", help="device_name for MNDevice"
+    )
     args = parser.parse_args()
     main(args.outdir, args.option_json, args.device)

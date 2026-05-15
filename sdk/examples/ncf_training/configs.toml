@@ -1,0 +1,34 @@
+title = "ncf_training"
+
+
+[model]
+factors    = 64
+mlp_layers = [256, 256, 128, 64]
+save_path  = "./ncf_model.pth"
+load_path  = ""
+model_path = "./ncf_model.pth"
+
+
+[dataset]
+dataset                  = "ml-1m"
+user_scaling             = 1       # this value must be the same as specified in preparation.sh
+item_scaling             = 1       # this value must be the same as specified in preparation.sh
+train_neg_ratio          = 4
+eval_neg_ratio           = 999
+allow_collision_with_pos = false
+loader_num_workers       = 2
+
+
+[training]
+epoch         = 20
+learning_rate = 0.0002
+
+
+[evaluation]
+topk = 10
+
+
+[misc]
+seed             = 0
+train_batch_size = 65536 # 2**16
+eval_batch_size  = 16384 # 2**14
