@@ -24,7 +24,17 @@ $ docker build -t mncore-sdk-full:0.6 -f mncore-sdk-full.Dockerfile --build-arg 
 
 ### For Podman users
 
-The Dockerfiles are designed to be compliant with Podman. Replace `docker` with `podman` in the examples above if you prefer to use Podman.
+The Dockerfiles are designed to be compliant with Podman.
+
+Unlike Docker, Podman requires the `localhost/` prefix to reference a locally-built image. You have to prepend `localhost/` to the image name when passing it as the 'minimal_image_ref' build argument.
+
+```sh
+# Build mncore-sdk-minimal:0.6.
+$ podman build -t mncore-sdk-minimal:0.6 -f mncore-sdk-minimal.Dockerfile .
+
+# Build mncore-sdk-full:0.6 based on mncore-sdk-minimal:0.6.
+$ podman build -t mncore-sdk-full:0.6 -f mncore-sdk-full.Dockerfile --build-arg minimal_image_ref=localhost/mncore-sdk-minimal:0.6 .
+```
 
 The resulting images will be OCI-compliant. They will function correctly regardless of whether you use Docker or Podman.
 

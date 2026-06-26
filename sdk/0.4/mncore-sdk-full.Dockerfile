@@ -19,7 +19,7 @@ ARG minimal_image_ref
 # * Downloads the Visual Studio Code CLI package.
 ################################################################################
 
-FROM curlimages/curl:8.15.0 AS download-vscode-cli
+FROM docker.io/curlimages/curl:8.15.0 AS download-vscode-cli
 
 # Install Visual Studio Code CLI.
 ARG VSCODE_CLI_VERSION=1.103.1
@@ -38,12 +38,10 @@ RUN curl -kL "https://update.code.visualstudio.com/${VSCODE_CLI_VERSION}/cli-lin
 
 FROM ${minimal_image_ref}
 
-RUN <<-EOF
-    rm -f /etc/apt/apt.conf.d/docker-clean
-    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
-    ls -R /var/cache/apt/archives
-
-    apt-get update
+RUN rm -f /etc/apt/apt.conf.d/docker-clean && \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
+    ls -R /var/cache/apt/archives && \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         automake \
@@ -67,10 +65,8 @@ RUN <<-EOF
         gawk \
         less \
         curl \
-        wget
-
+        wget && \
     ls -R /var/cache/apt/archives
-EOF
 
 # Install JupyterLab
 RUN npm install -g n && n stable && node -v
@@ -100,19 +96,15 @@ COPY <<-EOF /var/tmp/requirements-jupyter.txt
     jupyterlab_server==2.23.0
 EOF
 
-RUN <<-EOF
-    python3 -m pip install ipykernel
-    python3 -m ipykernel install
-    python3 -m pip install -r /var/tmp/requirements-jupyter.txt
-    python3 -m pip install -U jupyterlab
-    python3 -m jupyter lab build
-    python3 -m jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
-
-    # This symlink /app/jupyter/bin/jupyter is here for compatibility with older versions of MN-Core SDK.
-    # It should be removed in some future release.
-    mkdir -p /app/jupyter/bin
+RUN python3 -m pip install ipykernel && \
+    python3 -m ipykernel install && \
+    python3 -m pip install -r /var/tmp/requirements-jupyter.txt && \
+    python3 -m pip install -U jupyterlab && \
+    python3 -m jupyter lab build && \
+    python3 -m jupyter labextension disable "@jupyterlab/apputils-extension:announcements" && \
+    `# This symlink /app/jupyter/bin/jupyter is here for compatibility with older versions of MN-Core SDK. It should be removed in some future release.` && \
+    mkdir -p /app/jupyter/bin && \
     ln -s /usr/local/bin/jupyter /app/jupyter/bin/jupyter
-EOF
 
 # Set pre-installed fonts on macOS, Windows and Ubuntu in various versions for Jupyter.
 COPY <<-EOF /root/.jupyter/lab/user-settings/@jupyterlab/terminal-extension/plugin.jupyterlab-settings
