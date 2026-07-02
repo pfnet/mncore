@@ -55,6 +55,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean && \
         nodejs \
         npm \
         `# nbconvert dependencies for PDF export support in Jupyter` \
+        cargo \
         texlive-xetex \
         texlive-fonts-recommended \
         texlive-plain-generic \
@@ -72,29 +73,29 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean && \
 RUN npm install -g n && n stable && node -v
 
 # This `requirements-jupyter.txt` is embedded in the Dockerfile so that the Dockerfile builds standalone.
-COPY <<-EOF /var/tmp/requirements-jupyter.txt
-    nbconvert
-    notebook
-    widgetsnbextension
-    black # used by jupyterlab-code-formatter
-    python-language-server[all]
-    jupyter==1.0.0
-    jupyter-console==6.6.3
-    jupyter-events==0.6.3
-    jupyter-lsp==2.2.0
-    jupyter-ydoc==0.2.4
-    jupyter_client==8.2.0
-    jupyter_core==5.3.1
-    jupyter_server==2.6.0
-    jupyter_server_fileid==0.9.0
-    jupyter_server_terminals==0.4.4
-    jupyter_server_ydoc==0.8.0
-    jupyterlab==4.0.2
-    jupyterlab-code-formatter
-    jupyterlab-pygments==0.2.2
-    jupyterlab-widgets==3.0.7
-    jupyterlab_server==2.23.0
-EOF
+RUN printf '%s\n' \
+        'nbconvert' \
+        'notebook' \
+        'widgetsnbextension' \
+        'black # used by jupyterlab-code-formatter' \
+        'python-language-server[all]' \
+        'jupyter==1.0.0' \
+        'jupyter-console==6.6.3' \
+        'jupyter-events==0.6.3' \
+        'jupyter-lsp==2.2.0' \
+        'jupyter-ydoc==0.2.4' \
+        'jupyter_client==8.2.0' \
+        'jupyter_core==5.3.1' \
+        'jupyter_server==2.6.0' \
+        'jupyter_server_fileid==0.9.0' \
+        'jupyter_server_terminals==0.4.4' \
+        'jupyter_server_ydoc==0.8.0' \
+        'jupyterlab==4.0.2' \
+        'jupyterlab-code-formatter' \
+        'jupyterlab-pygments==0.2.2' \
+        'jupyterlab-widgets==3.0.7' \
+        'jupyterlab_server==2.23.0' \
+        > /var/tmp/requirements-jupyter.txt
 
 RUN python3 -m pip install ipykernel && \
     python3 -m ipykernel install && \
@@ -107,11 +108,12 @@ RUN python3 -m pip install ipykernel && \
     ln -s /usr/local/bin/jupyter /app/jupyter/bin/jupyter
 
 # Set pre-installed fonts on macOS, Windows and Ubuntu in various versions for Jupyter.
-COPY <<-EOF /root/.jupyter/lab/user-settings/@jupyterlab/terminal-extension/plugin.jupyterlab-settings
-    {
-        "fontFamily": "'SF Mono', Menlo, 'Courier New', Consolas, 'Ubuntu Mono', 'DejaVu Sans Mono', monospace",
-    }
-EOF
+RUN mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/terminal-extension && \
+    printf '%s\n' \
+        '{' \
+        "    \"fontFamily\": \"'SF Mono', Menlo, 'Courier New', Consolas, 'Ubuntu Mono', 'DejaVu Sans Mono', monospace\"," \
+        '}' \
+        > /root/.jupyter/lab/user-settings/@jupyterlab/terminal-extension/plugin.jupyterlab-settings
 
 # Copy Visual Studio Code CLI.
 COPY --from=download-vscode-cli /tmp/vscode-cli/code /usr/local/bin/code

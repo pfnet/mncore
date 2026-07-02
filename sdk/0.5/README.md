@@ -38,6 +38,8 @@ $ podman build -t mncore-sdk-full:0.5 -f mncore-sdk-full.Dockerfile --build-arg 
 
 The resulting images will be OCI-compliant. They will function correctly regardless of whether you use Docker or Podman.
 
+If you use Podman 3.x, which is standard in Ubuntu 22.04, you may have to append another option `--security-opt seccomp=unconfined` into the `podman build` command.
+
 #### For your information: build warnings
 
 You may observe warning messages like below during the build process on some versions of Podman (v4.9 - v5.2).
