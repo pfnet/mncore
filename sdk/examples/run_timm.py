@@ -280,7 +280,19 @@ if __name__ == "__main__":
         "--device",
         type=str,
         default="mncore2:auto",
-        choices=["mncore2:auto", "pfvm:cpu", "pfvm:cuda"],
+        choices=[
+            "mncore2:auto",
+            "mncore2:0",
+            "mncore2:1",
+            "mncore2:2",
+            "mncore2:3",
+            "mncore2:4",
+            "mncore2:5",
+            "mncore2:6",
+            "mncore2:7",
+            "pfvm:cpu",
+            "pfvm:cuda",
+        ],
     )
     parser.add_argument(
         "--model_cache_dir",

@@ -1,0 +1,51 @@
+title = "stable_diffusion_training"
+
+
+[mlsdk]
+num_compiler_threads          = -1
+do_quiet_compilation          = false
+skip_text_encoder_compilation = false
+skip_unet_compilation         = false
+skip_vae_encoder_compilation  = false
+skip_vae_decoder_compilation  = false
+
+
+[model]
+model_path          = "CompVis/stable-diffusion-v1-4"
+# Can also set model_path to fine-tuned model created by `stable_diffusion_training.py`
+# For example,
+#   ./stable_diffusion_training.py --outdir /tmp/sd_train
+# Then, the model will be saved to
+#   model_path = "/tmp/sd_train/model"
+height              = 512                             # height for input image
+width               = 512                             # width for input image
+do_lora             = false
+lora_rank           = 4
+init_lora_weights   = ""
+
+
+[dataset]
+data_cache_dir = ""
+
+
+[training]
+epoch                   = 1
+save_model              = true
+optimizer               = "sgd"
+learning_rate           = 1e-4
+momentum                = 0.2
+weight_decay            = 1e-2
+lr_scheduler            = "constant"
+use_mncore_lr_scheduler = false
+lr_warmup               = 500
+use_pretrained_unet     = true  # Fine-tune pretrained UNet
+
+
+[inference]
+guidance_scale = 7.5
+skip_safety_check = true  # Set to `true` to prevent black image generation
+
+
+[misc]
+seed       = 0
+batch_size = 1

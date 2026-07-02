@@ -17,11 +17,11 @@ Programs developed with the MN-Core SDK are portable. They can run on MN-Core ha
 
 We recommend installing the MN-Core SDK environment using Docker for a consistent setup. Please refer to the following documentation for detailed installation instructions:
 
-* [`sdk/0.5/README.md`](sdk/0.5/README.md)
+* [`sdk/0.6/README.md`](sdk/0.6/README.md)
 
 When using MLSDK, the following documentation will be helpful:
 
-* [MLSDK Documentation](https://dev.mn-core.com/sdk/0.5/MLSDK/docs/en/)
+* MLSDK Documentation: [en](https://dev.mn-core.com/sdk/latest/MLSDK/docs/en/), [ja](https://dev.mn-core.com/sdk/latest/MLSDK/docs/ja/)
 * [MLSDK Examples](sdk/examples/README.md)
 
 When testing HPCSDK, please refer to the header files included with the SDK. Note that HPCSDK is currently in an alpha stage.
@@ -38,26 +38,23 @@ The usage of the emulator differs between MLSDK and HPCSDK. Please refer to thei
 
 ### Run on bare metal (MN-Core 2 Devkit / MN-Server 2)
 
-If you have access to an MN-Core 2 Devkit or MN-Server 2, you can run programs on actual MN-Core hardware instead of the emulator. These systems allow you to execute programs within a Docker container built using the instructions in [`sdk/0.5/README.md`](sdk/0.5/README.md).
+If you have access to an MN-Core 2 Devkit or MN-Server 2, you can run programs on actual MN-Core hardware instead of the emulator. These systems allow you to execute programs within a Docker container built using the instructions in [`sdk/0.6/README.md`](sdk/0.6/README.md).
 
 ### Run on the cloud (Preferred Computing Platform; PFCP)
 
 The Preferred Computing Platform (PFCP) also provides environments equipped with MN-Core processors.
-You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.5/README.md`](sdk/0.5/README.md).
+You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.6/README.md`](sdk/0.6/README.md).
 This makes it straightforward to deploy MN-Core applications on PFCP after verifying them locally with the emulator or on bare-metal systems.
 For instructions on using MN-Core on PFCP, please refer to the [PFCP documentation](https://docs.pfcomputing.com/).
 
 ## Repository Contents
 
-* `apt/`  -- Resources to install MN-Core packages via `apt`
-  * `add_mncore_packages.sh`  -- Script to add the APT repository in your Ubuntu system
-* `sdk/`  -- MN-Core SDK
-  * `0.4/`  -- MN-Core SDK 0.4
-    * `mncore-sdk-minimal.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.4 minimal Docker image with dependencies
-    * `mncore-sdk-full.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.4 "full" Docker image with extra packages
-    * `create_dev_ctr.sh`  -- Script to start an MN-Core SDK 0.4 development container
-  * `0.5/`  -- MN-Core SDK 0.5
-    * `mncore-sdk-minimal.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.5 minimal Docker image with dependencies
-    * `mncore-sdk-full.Dockerfile`  -- Dockerfile to build the MN-Core SDK 0.5 "full" Docker image with extra packages
-    * `create_dev_ctr.sh`  -- Script to start an MN-Core SDK 0.5 development container
-  * `examples/`  -- Examples for the latest MLSDK
+* `apt/` -- Resources to install MN-Core packages via `apt`
+  * `add_mncore_packages.sh` -- Script to add the APT repository in your Ubuntu system
+* `sdk/` -- MN-Core SDK
+  * `0.4/`, `0.5/`, `0.6/` -- MN-Core SDK versions. Each contains:
+    * `README.md` -- Explaining how to prepare MN-Core SDK environment
+    * `mncore-sdk-minimal.Dockerfile` — Dockerfile for minimal image with dependencies
+    * `mncore-sdk-full.Dockerfile` — Dockerfile for "full" image with extra packages
+    * `create_dev_ctr.sh` — Script to start a development container
+  * `examples/` — Examples for the latest MLSDK

@@ -1,0 +1,6 @@
+diffusers==0.26.0
+huggingface-hub==0.24.7
+transformers==4.44.0
+datasets
+peft
+tqdm
