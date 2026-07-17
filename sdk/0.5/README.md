@@ -70,6 +70,12 @@ devices.
 $ bash create_dev_ctr.sh -A
 ```
 
+When using Podman instead of Docker, pass the `-R <container_runtime_cli>` and `-i <image_name>` options to the script as shown below.
+
+```bash
+$ bash create_dev_ctr.sh -R podman -i localhost/mncore-sdk-full:0.5 -A
+```
+
 If you want to use specific MN-Core devices, specify them explicitly.
 
 ```bash

@@ -11,23 +11,25 @@ DOCKER_OPTS=()
 function usage() {
     echo "$0 -- Launch docker container for MN-Core devenv" >&2
     echo "" >&2
-    echo "$0 [-A] [-i IMAGE] [-s MOUNT] [-O DOCKER_OPTS] devices..." >&2
+    echo "$0 [-A] [-i IMAGE] [-s MOUNT] [-R RUNTIME_CLI] [-O DOCKER_OPTS] devices..." >&2
     echo "" >&2
     echo "Options:" >&2
     echo "  -A              Mount all devices on the node to the container" >&2
     echo "  -i IMAGE[:TAG]  Use specified IMAGE (${IMAGE})" >&2
     echo "  -s MOUNT        Use specified MOUNT for sharing semaphore (${SEMAPHORE_MOUNT})" >&2
-    echo "  -O DOCKER_OPTS  Additional docker-run options"
+    echo "  -R RUNTIME_CLI  Container runtime CLI (${DOCKER})" >&2
+    echo "  -O DOCKER_OPTS  Additional docker-run options" >&2
     echo "" >&2
     exit 1
 }
 
 USE_ALL=0
-while getopts "Ai:s:O:h" opt; do
+while getopts "Ai:s:R:O:h" opt; do
     case "${opt}" in
     A) USE_ALL=1;;
-    i) IMAGE=${OPTARG};;
+    i) IMAGE=${OPTARG};;  # localhost/ prefix is required when run with -R podman, that is, the options would be -R podman -i localhost/mncore-sdk-full:0.6
     s) SEMAPHORE_MOUNT=${OPTARG};;
+    R) DOCKER=${OPTARG};;
     O) DOCKER_OPTS+=(${OPTARG});;
     h) usage
     esac
