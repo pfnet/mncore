@@ -41,8 +41,7 @@ elif [[ ${USE_ALL} -ne 0 ]]; then
     echo "Enumerating devices" >&2
     readarray -t DEVICES < <(find /dev -regex ${MNCORE_REGEX})
     if [[ ${#DEVICES[@]} -eq 0 ]]; then
-        echo "E: No device found." >&2
-        exit 1
+        echo "[WARN] No MN-Core device found. You can use emulator backend only" >&2
     fi
 else
     echo "E: No device list nor use-all flag (-A) specified." >&2
