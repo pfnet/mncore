@@ -28,5 +28,6 @@ def run_add():
 
 
 if __name__ == "__main__":
-    with trace_scope("/tmp/add_trace.pb"):
+    filename = "/tmp/add_trace.pb"  # Set `None` to disable tracing.
+    with trace_scope(filename):
         run_add()

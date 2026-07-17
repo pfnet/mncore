@@ -17,7 +17,7 @@ Programs developed with the MN-Core SDK are portable. They can run on MN-Core ha
 
 We recommend installing the MN-Core SDK environment using Docker for a consistent setup. Please refer to the following documentation for detailed installation instructions:
 
-* [`sdk/0.6/README.md`](sdk/0.6/README.md)
+* [`sdk/0.7/README.md`](sdk/0.7/README.md)
 
 When using MLSDK, the following documentation will be helpful:
 
@@ -38,12 +38,12 @@ The usage of the emulator differs between MLSDK and HPCSDK. Please refer to thei
 
 ### Run on bare metal (MN-Core 2 Devkit / MN-Server 2)
 
-If you have access to an MN-Core 2 Devkit or MN-Server 2, you can run programs on actual MN-Core hardware instead of the emulator. These systems allow you to execute programs within a Docker container built using the instructions in [`sdk/0.6/README.md`](sdk/0.6/README.md).
+If you have access to an MN-Core 2 Devkit or MN-Server 2, you can run programs on actual MN-Core hardware instead of the emulator. These systems allow you to execute programs within a Docker container built using the instructions in [`sdk/0.7/README.md`](sdk/0.7/README.md).
 
 ### Run on the cloud (Preferred Computing Platform; PFCP)
 
 The Preferred Computing Platform (PFCP) also provides environments equipped with MN-Core processors.
-You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.6/README.md`](sdk/0.6/README.md).
+You can use pre-built Docker images on PFCP that are equivalent to images built with [`sdk/0.7/README.md`](sdk/0.7/README.md).
 This makes it straightforward to deploy MN-Core applications on PFCP after verifying them locally with the emulator or on bare-metal systems.
 For instructions on using MN-Core on PFCP, please refer to the [PFCP documentation](https://docs.pfcomputing.com/).
 
@@ -52,7 +52,7 @@ For instructions on using MN-Core on PFCP, please refer to the [PFCP documentati
 * `apt/` -- Resources to install MN-Core packages via `apt`
   * `add_mncore_packages.sh` -- Script to add the APT repository in your Ubuntu system
 * `sdk/` -- MN-Core SDK
-  * `0.4/`, `0.5/`, `0.6/` -- MN-Core SDK versions. Each contains:
+  * `0.4/`, `0.5/`, `0.6/`, `0.7/` -- MN-Core SDK versions. Each contains:
     * `README.md` -- Explaining how to prepare MN-Core SDK environment
     * `mncore-sdk-minimal.Dockerfile` — Dockerfile for minimal image with dependencies
     * `mncore-sdk-full.Dockerfile` — Dockerfile for "full" image with extra packages
