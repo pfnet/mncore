@@ -11,7 +11,7 @@ This repository provides the following resources for working with MN-Core:
 The MN-Core SDK enables developers to build and optimize programs for the MN-Core architecture. The SDK consists of two primary components:
 
 * MLSDK: Provides PyTorch-compatible interface for developing machine learning models.
-* HPCSDK: Provides a general-purpose programming environment in C/C++ with OpenCL-compatible and directive-based programming models. Currently, only MNCL, an OpenCL-compatible environment, is provided.
+* HPCSDK: Provides a general-purpose programming environment in C/C++ with OpenCL-like and directive-based programming models. Currently, only MNCL, an OpenCL-like environment, is provided.
 
 Programs developed with the MN-Core SDK are portable. They can run on MN-Core hardware and emulators, and MLSDK programs can also run on GPUs. This flexibility allows you to verify the compatibility of your programs quickly even without direct access to MN-Core hardware.
 
