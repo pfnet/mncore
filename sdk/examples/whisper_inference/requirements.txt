@@ -1,0 +1,6 @@
+openai-whisper
+soundfile
+jiwer
+pandas
+torchaudio==2.9.0
+torchcodec==0.9.0

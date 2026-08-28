@@ -36,6 +36,7 @@ if [[ "${DEVICE}" == "mncore2"* ]]; then
         "load_codegen_dir.py"
         "add_trace.py"
         "explicit_data_transfer_api.py"
+        "io_spec_constraints.py"
         "infer.py"
         "infer_multi.py"
         "train.py"

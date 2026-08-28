@@ -1,0 +1,15 @@
+title = "whisper_inference"
+
+
+[data]
+data_name    = "test-clean" # dataset name of LibriSpeech dataset to download
+chunk_length = 30           # size of the chunk of input audio data. here, chunk_length == the number of seconds of the audio data
+
+
+[inference]
+model = "base.en" # model names used in whisper inference
+
+
+[misc]
+seed       = 0
+batch_size = 1
