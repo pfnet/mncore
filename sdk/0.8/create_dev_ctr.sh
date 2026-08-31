@@ -41,13 +41,27 @@ if [[ $# -ne 0 ]]; then
     DEVICES=($@)
 elif [[ ${USE_ALL} -ne 0 ]]; then
     echo "Enumerating devices" >&2
-    readarray -t DEVICES < <(find /dev -regex ${MNCORE_REGEX})
+    while IFS= read -r dev; do
+        DEVICES+=("${dev}")
+    done < <(find /dev -regex "${MNCORE_REGEX}")
     if [[ ${#DEVICES[@]} -eq 0 ]]; then
         echo "[WARN] No MN-Core device found. You can use emulator backend only" >&2
     fi
 else
     echo "E: No device list nor use-all flag (-A) specified." >&2
     usage $0
+fi
+
+DEVICE_OPTS=()
+for dev in "${DEVICES[@]+"${DEVICES[@]}"}"; do
+    DEVICE_OPTS+=("--device=${dev}")
+done
+
+MOUNT_OPTS=()
+if [[ ${#DEVICES[@]} -gt 0 ]]; then
+    MOUNT_OPTS+=("-v" "${SEMAPHORE_MOUNT}")
+else
+    echo "[INFO] No semaphore mount (${SEMAPHORE_MOUNT}) as no MN-Core device found." >&2
 fi
 
 # check if the image is already loaded to the system
@@ -60,15 +74,15 @@ echo "Starting container" >&2
 CTR_ID=$(${DOCKER} run \
     --privileged \
     -d \
-    -v ${SEMAPHORE_MOUNT} \
-    $(echo ${DEVICES[@]} | xargs -n1 printf " --device=%s") \
-    ${DOCKER_OPTS[@]} \
+    "${MOUNT_OPTS[@]+"${MOUNT_OPTS[@]}"}" \
+    "${DEVICE_OPTS[@]+"${DEVICE_OPTS[@]}"}" \
+    "${DOCKER_OPTS[@]+"${DOCKER_OPTS[@]}"}" \
     ${IMAGE} \
     sleep inf)
 echo ${CTR_ID}
 
 echo "Setting up devices" >&2
-for dev in ${DEVICES[@]}; do
+for dev in "${DEVICES[@]+"${DEVICES[@]}"}"; do
     echo "  ${dev}" >&2
 
     if ! ${DOCKER} exec --privileged -it ${CTR_ID} gpfn3-smi config ${dev#/dev/} clock --core=750 --gddr6=15000; then
