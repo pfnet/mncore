@@ -57,7 +57,8 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=ghcr.io/astral-sh/uv:0.12.24 /uv /uvx /usr/local/bin/
+# Users can pin "uv" to a specific version when needed.
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 
 RUN rm /usr/lib/python3.12/EXTERNALLY-MANAGED && \
     uv pip install \
